@@ -5,7 +5,7 @@ const { response } = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -16,8 +16,11 @@ app.use(cors());
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 
+app.get("/", (req, res) => {
+  res.json({status: "server running"})
+})
 app.get("/api/:search", (req, res) => {
-    const url = `https://api.mercadolibre.com/sites/MLA/search?q=${req.params.search}&limit=4`;
+    const url = `https://api.mercadolibre.com/sites/MLA/search?q=${req.params.search}&limit=10`;
     axios.get(url)
     .then(response => {
         res.json(response.data.results)
